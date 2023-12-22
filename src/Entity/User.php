@@ -38,12 +38,7 @@ class User
     #[ORM\Column]
     private ?int $nombre_jrs_conge = null;
 
-    #[ORM\OneToOne(mappedBy: 'Historique_User', cascade: ['persist', 'remove'])]
-    private ?Historique $historique = null;
 
-    #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Historique $User_Historique = null;
 
     #[ORM\OneToMany(mappedBy: 'Conge_User', targetEntity: Conge::class)]
     private Collection $conges;
@@ -63,10 +58,11 @@ class User
     #[ORM\OneToMany(mappedBy: 'Commande_User', targetEntity: Commande::class)]
     private Collection $commandes;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Equipement::class)]
-    private Collection $User_Equipement;
 
-    #[ORM\OneToMany(mappedBy: 'Equipement_User', targetEntity: Equipement::class)]
+    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Historique::class)]
+    private Collection $historiques;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Equipement::class)]
     private Collection $equipements;
 
     public function __construct()
@@ -77,7 +73,8 @@ class User
         $this->User_Reclamation = new ArrayCollection();
         $this->User_Commande = new ArrayCollection();
         $this->commandes = new ArrayCollection();
-        $this->User_Equipement = new ArrayCollection();
+
+        $this->historiques = new ArrayCollection();
         $this->equipements = new ArrayCollection();
     }
 
@@ -191,17 +188,7 @@ class User
         return $this;
     }
 
-    public function getUserHistorique(): ?Historique
-    {
-        return $this->User_Historique;
-    }
 
-    public function setUserHistorique(Historique $User_Historique): static
-    {
-        $this->User_Historique = $User_Historique;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Conge>
@@ -386,27 +373,28 @@ class User
     /**
      * @return Collection<int, Equipement>
      */
-    public function getUserEquipement(): Collection
+
+    public function getHistoriques(): Collection
     {
-        return $this->User_Equipement;
+        return $this->historiques;
     }
 
-    public function addUserEquipement(Equipement $userEquipement): static
+    public function addHistorique(Historique $historique): static
     {
-        if (!$this->User_Equipement->contains($userEquipement)) {
-            $this->User_Equipement->add($userEquipement);
-            $userEquipement->setUser($this);
+        if (!$this->historiques->contains($historique)) {
+            $this->historiques->add($historique);
+            $historique->setUserId($this);
         }
 
         return $this;
     }
 
-    public function removeUserEquipement(Equipement $userEquipement): static
+    public function removeHistorique(Historique $historique): static
     {
-        if ($this->User_Equipement->removeElement($userEquipement)) {
+        if ($this->historiques->removeElement($historique)) {
             // set the owning side to null (unless already changed)
-            if ($userEquipement->getUser() === $this) {
-                $userEquipement->setUser(null);
+            if ($historique->getUserId() === $this) {
+                $historique->setUserId(null);
             }
         }
 
@@ -425,7 +413,7 @@ class User
     {
         if (!$this->equipements->contains($equipement)) {
             $this->equipements->add($equipement);
-            $equipement->setEquipementUser($this);
+            $equipement->setUser($this);
         }
 
         return $this;
@@ -435,13 +423,19 @@ class User
     {
         if ($this->equipements->removeElement($equipement)) {
             // set the owning side to null (unless already changed)
-            if ($equipement->getEquipementUser() === $this) {
-                $equipement->setEquipementUser(null);
+            if ($equipement->getUser() === $this) {
+                $equipement->setUser(null);
             }
         }
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->nom." ".$this->prenom;
+    }
+
 
 
 }

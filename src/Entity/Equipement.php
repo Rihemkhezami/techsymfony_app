@@ -22,16 +22,13 @@ class Equipement
     #[ORM\Column(type: Types::BLOB)]
     private $image = null;
 
-    #[ORM\ManyToOne(inversedBy: 'User_Equipement')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
 
-    #[ORM\ManyToOne(inversedBy: 'equipements')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $Equipement_User = null;
 
     #[ORM\ManyToMany(targetEntity: Consommable::class, inversedBy: 'equipements')]
     private Collection $Equipement_Consommable;
+
+    #[ORM\ManyToOne(inversedBy: 'equipements')]
+    private ?User $user = null;
 
 
 
@@ -82,21 +79,8 @@ class Equipement
         return $this;
     }
 
-    public function getEquipementUser(): ?User
-    {
-        return $this->Equipement_User;
-    }
 
-    public function setEquipementUser(?User $Equipement_User): static
-    {
-        $this->Equipement_User = $Equipement_User;
 
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Consommable>
-     */
     public function getEquipementConsommable(): Collection
     {
         return $this->Equipement_Consommable;

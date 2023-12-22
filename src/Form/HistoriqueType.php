@@ -13,8 +13,7 @@ class HistoriqueType extends AbstractType
     {
         $builder
             ->add('date_auth')
-            ->add('Historique_User')
-            ->add('user')
+            ->add('user_id')
         ;
     }
 

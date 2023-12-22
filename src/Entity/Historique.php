@@ -17,16 +17,8 @@ class Historique
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_auth = null;
 
-    #[ORM\OneToOne(inversedBy: 'historique', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $Historique_User = null;
-
-    #[ORM\OneToOne(mappedBy: 'User_Historique', cascade: ['persist', 'remove'])]
-    private ?User $user = null;
-
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-
+    #[ORM\ManyToOne(inversedBy: 'historiques')]
+    private ?User $user_id = null;
 
     public function getId(): ?int
     {
@@ -45,34 +37,15 @@ class Historique
         return $this;
     }
 
-    public function getHistoriqueUser(): ?User
+    public function getUserId(): ?User
     {
-        return $this->Historique_User;
+        return $this->user_id;
     }
 
-    public function setHistoriqueUser(User $Historique_User): static
+    public function setUserId(?User $user_id): static
     {
-        $this->Historique_User = $Historique_User;
+        $this->user_id = $user_id;
 
         return $this;
     }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(User $user): static
-    {
-        // set the owning side of the relation if necessary
-        if ($user->getUserHistorique() !== $this) {
-            $user->setUserHistorique($this);
-        }
-
-        $this->user = $user;
-
-        return $this;
-    }
-
-
 }

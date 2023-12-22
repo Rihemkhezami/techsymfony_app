@@ -19,8 +19,6 @@ class UserType extends AbstractType
             ->add('email')
             ->add('role')
             ->add('nombre_jrs_conge')
-            ->add('historique')
-            ->add('User_Historique')
         ;
     }
 

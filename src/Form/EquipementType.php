@@ -14,9 +14,8 @@ class EquipementType extends AbstractType
         $builder
             ->add('label')
             ->add('image')
-            ->add('user')
-            ->add('Equipement_User')
             ->add('Equipement_Consommable')
+            ->add('user')
         ;
     }
 

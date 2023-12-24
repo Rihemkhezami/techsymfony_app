@@ -14,8 +14,7 @@ class CommandeType extends AbstractType
         $builder
             ->add('date')
             ->add('status')
-            ->add('user')
-            ->add('Commande_User')
+            ->add('User')
         ;
     }
 

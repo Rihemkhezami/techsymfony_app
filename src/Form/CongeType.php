@@ -15,8 +15,7 @@ class CongeType extends AbstractType
             ->add('date_debut_con')
             ->add('date_fin_con')
             ->add('duree_conge')
-            ->add('Conge_User')
-            ->add('user')
+            ->add('User')
         ;
     }
 

@@ -24,10 +24,10 @@ class Conge
     private ?int $duree_conge = null;
 
     #[ORM\ManyToOne(inversedBy: 'conges')]
-    private ?User $Conge_User = null;
+    private ?User $User = null;
 
-    #[ORM\ManyToOne(inversedBy: 'User_Conge')]
-    private ?User $user = null;
+
+
 
     public function getId(): ?int
     {
@@ -70,27 +70,16 @@ class Conge
         return $this;
     }
 
-    public function getCongeUser(): ?User
-    {
-        return $this->Conge_User;
-    }
-
-    public function setCongeUser(?User $Conge_User): static
-    {
-        $this->Conge_User = $Conge_User;
-
-        return $this;
-    }
-
     public function getUser(): ?User
     {
-        return $this->user;
+        return $this->User;
     }
 
-    public function setUser(?User $user): static
+    public function setUser(?User $User): static
     {
-        $this->user = $user;
+        $this->User = $User;
 
         return $this;
     }
+
 }

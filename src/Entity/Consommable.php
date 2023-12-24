@@ -28,18 +28,18 @@ class Consommable
 
 
 
-    #[ORM\OneToMany(mappedBy: 'LigneCommande_Consommable', targetEntity: LigneCommande::class)]
-    private Collection $ligneCommandes;
 
     #[ORM\ManyToMany(targetEntity: Equipement::class, mappedBy: 'Equipement_Consommable')]
     private Collection $equipements;
+
+    #[ORM\ManyToOne(inversedBy: 'consommables')]
+    private ?LigneCommande $LigneCommande = null;
 
 
 
     public function __construct()
     {
-        $this->commandes = new ArrayCollection();
-        $this->Consommable_Commande = new ArrayCollection();
+
         $this->ligneCommandes = new ArrayCollection();
         $this->equipements = new ArrayCollection();
         $this->Consommable_Equipement = new ArrayCollection();
@@ -86,86 +86,7 @@ class Consommable
         return $this;
     }
 
-    /**
-     * @return Collection<int, Commande>
-     */
-    public function getCommandes(): Collection
-    {
-        return $this->commandes;
-    }
 
-    public function addCommande(Commande $commande): static
-    {
-        if (!$this->commandes->contains($commande)) {
-            $this->commandes->add($commande);
-            $commande->addCommandeConsommable($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCommande(Commande $commande): static
-    {
-        if ($this->commandes->removeElement($commande)) {
-            $commande->removeCommandeConsommable($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Commande>
-     */
-    public function getConsommableCommande(): Collection
-    {
-        return $this->Consommable_Commande;
-    }
-
-    public function addConsommableCommande(Commande $consommableCommande): static
-    {
-        if (!$this->Consommable_Commande->contains($consommableCommande)) {
-            $this->Consommable_Commande->add($consommableCommande);
-        }
-
-        return $this;
-    }
-
-    public function removeConsommableCommande(Commande $consommableCommande): static
-    {
-        $this->Consommable_Commande->removeElement($consommableCommande);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, LigneCommande>
-     */
-    public function getLigneCommandes(): Collection
-    {
-        return $this->ligneCommandes;
-    }
-
-    public function addLigneCommande(LigneCommande $ligneCommande): static
-    {
-        if (!$this->ligneCommandes->contains($ligneCommande)) {
-            $this->ligneCommandes->add($ligneCommande);
-            $ligneCommande->setLigneCommandeConsommable($this);
-        }
-
-        return $this;
-    }
-
-    public function removeLigneCommande(LigneCommande $ligneCommande): static
-    {
-        if ($this->ligneCommandes->removeElement($ligneCommande)) {
-            // set the owning side to null (unless already changed)
-            if ($ligneCommande->getLigneCommandeConsommable() === $this) {
-                $ligneCommande->setLigneCommandeConsommable(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Equipement>
@@ -221,6 +142,18 @@ class Consommable
     public function __toString(): string
     {
         return $this->label;
+    }
+
+    public function getLigneCommande(): ?LigneCommande
+    {
+        return $this->LigneCommande;
+    }
+
+    public function setLigneCommande(?LigneCommande $LigneCommande): static
+    {
+        $this->LigneCommande = $LigneCommande;
+
+        return $this;
     }
 
 }

@@ -13,9 +13,7 @@ class LigneCommandeType extends AbstractType
     {
         $builder
             ->add('quantite')
-            ->add('commande')
-            ->add('LigneCommande_Commande')
-            ->add('LigneCommande_Consommable')
+            ->add('Commande')
         ;
     }
 

@@ -22,29 +22,25 @@ class Commande
     #[ORM\Column(length: 255)]
     private ?string $status = null;
 
-    #[ORM\ManyToOne(inversedBy: 'User_Commande')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+
+
+
 
     #[ORM\ManyToOne(inversedBy: 'commandes')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $Commande_User = null;
+    private ?User $User = null;
 
-
-
-
-    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: LigneCommande::class)]
-    private Collection $Commande_LigneCommande;
-
-    #[ORM\OneToMany(mappedBy: 'LigneCommande_Commande', targetEntity: LigneCommande::class)]
+    #[ORM\OneToMany(mappedBy: 'Commande', targetEntity: LigneCommande::class)]
     private Collection $ligneCommandes;
+
+
 
     public function __construct()
     {
-        $this->Commande_Consommable = new ArrayCollection();
+
         $this->consommables = new ArrayCollection();
-        $this->Commande_LigneCommande = new ArrayCollection();
         $this->ligneCommandes = new ArrayCollection();
+
+
     }
 
     public function getId(): ?int
@@ -76,107 +72,21 @@ class Commande
         return $this;
     }
 
+
+
+    public function __toString(): string
+    {
+        return $this->id;
+    }
+
     public function getUser(): ?User
     {
-        return $this->user;
+        return $this->User;
     }
 
-    public function setUser(?User $user): static
+    public function setUser(?User $User): static
     {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    public function getCommandeUser(): ?User
-    {
-        return $this->Commande_User;
-    }
-
-    public function setCommandeUser(?User $Commande_User): static
-    {
-        $this->Commande_User = $Commande_User;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Consommable>
-     */
-    public function getCommandeConsommable(): Collection
-    {
-        return $this->Commande_Consommable;
-    }
-
-    public function addCommandeConsommable(Consommable $commandeConsommable): static
-    {
-        if (!$this->Commande_Consommable->contains($commandeConsommable)) {
-            $this->Commande_Consommable->add($commandeConsommable);
-        }
-
-        return $this;
-    }
-
-    public function removeCommandeConsommable(Consommable $commandeConsommable): static
-    {
-        $this->Commande_Consommable->removeElement($commandeConsommable);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Consommable>
-     */
-    public function getConsommables(): Collection
-    {
-        return $this->consommables;
-    }
-
-    public function addConsommable(Consommable $consommable): static
-    {
-        if (!$this->consommables->contains($consommable)) {
-            $this->consommables->add($consommable);
-            $consommable->addConsommableCommande($this);
-        }
-
-        return $this;
-    }
-
-    public function removeConsommable(Consommable $consommable): static
-    {
-        if ($this->consommables->removeElement($consommable)) {
-            $consommable->removeConsommableCommande($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, LigneCommande>
-     */
-    public function getCommandeLigneCommande(): Collection
-    {
-        return $this->Commande_LigneCommande;
-    }
-
-    public function addCommandeLigneCommande(LigneCommande $commandeLigneCommande): static
-    {
-        if (!$this->Commande_LigneCommande->contains($commandeLigneCommande)) {
-            $this->Commande_LigneCommande->add($commandeLigneCommande);
-            $commandeLigneCommande->setCommande($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCommandeLigneCommande(LigneCommande $commandeLigneCommande): static
-    {
-        if ($this->Commande_LigneCommande->removeElement($commandeLigneCommande)) {
-            // set the owning side to null (unless already changed)
-            if ($commandeLigneCommande->getCommande() === $this) {
-                $commandeLigneCommande->setCommande(null);
-            }
-        }
+        $this->User = $User;
 
         return $this;
     }
@@ -193,7 +103,7 @@ class Commande
     {
         if (!$this->ligneCommandes->contains($ligneCommande)) {
             $this->ligneCommandes->add($ligneCommande);
-            $ligneCommande->setLigneCommandeCommande($this);
+            $ligneCommande->setCommande($this);
         }
 
         return $this;
@@ -203,17 +113,12 @@ class Commande
     {
         if ($this->ligneCommandes->removeElement($ligneCommande)) {
             // set the owning side to null (unless already changed)
-            if ($ligneCommande->getLigneCommandeCommande() === $this) {
-                $ligneCommande->setLigneCommandeCommande(null);
+            if ($ligneCommande->getCommande() === $this) {
+                $ligneCommande->setCommande(null);
             }
         }
 
         return $this;
-    }
-
-    public function __toString(): string
-    {
-        return $this->id;
     }
 
 

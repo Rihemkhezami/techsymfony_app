@@ -16,6 +16,7 @@ class ConsommableType extends AbstractType
             ->add('stock')
             ->add('image')
             ->add('equipements')
+            ->add('LigneCommande')
         ;
     }
 

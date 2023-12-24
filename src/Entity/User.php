@@ -38,44 +38,31 @@ class User
     #[ORM\Column]
     private ?int $nombre_jrs_conge = null;
 
-
-
-    #[ORM\OneToMany(mappedBy: 'Conge_User', targetEntity: Conge::class)]
-    private Collection $conges;
-
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Conge::class)]
-    private Collection $User_Conge;
-
-    #[ORM\OneToMany(mappedBy: 'Reclamation_User', targetEntity: Reclamation::class)]
-    private Collection $reclamations;
-
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Reclamation::class)]
-    private Collection $User_Reclamation;
-
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Commande::class)]
-    private Collection $User_Commande;
-
-    #[ORM\OneToMany(mappedBy: 'Commande_User', targetEntity: Commande::class)]
-    private Collection $commandes;
-
-
     #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Historique::class)]
     private Collection $historiques;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Equipement::class)]
     private Collection $equipements;
 
+
+
+
+    #[ORM\OneToMany(mappedBy: 'User', targetEntity: Commande::class)]
+    private Collection $commandes;
+
+    #[ORM\OneToMany(mappedBy: 'User', targetEntity: Conge::class)]
+    private Collection $conges;
+
+    #[ORM\OneToMany(mappedBy: 'User', targetEntity: Reclamation::class)]
+    private Collection $reclamations;
+
     public function __construct()
     {
-        $this->conges = new ArrayCollection();
-        $this->User_Conge = new ArrayCollection();
-        $this->reclamations = new ArrayCollection();
-        $this->User_Reclamation = new ArrayCollection();
-        $this->User_Commande = new ArrayCollection();
-        $this->commandes = new ArrayCollection();
-
         $this->historiques = new ArrayCollection();
         $this->equipements = new ArrayCollection();
+        $this->commandes = new ArrayCollection();
+        $this->conges = new ArrayCollection();
+        $this->reclamations = new ArrayCollection();
     }
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
@@ -189,191 +176,6 @@ class User
     }
 
 
-
-    /**
-     * @return Collection<int, Conge>
-     */
-    public function getConges(): Collection
-    {
-        return $this->conges;
-    }
-
-    public function addConge(Conge $conge): static
-    {
-        if (!$this->conges->contains($conge)) {
-            $this->conges->add($conge);
-            $conge->setCongeUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeConge(Conge $conge): static
-    {
-        if ($this->conges->removeElement($conge)) {
-            // set the owning side to null (unless already changed)
-            if ($conge->getCongeUser() === $this) {
-                $conge->setCongeUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Conge>
-     */
-    public function getUserConge(): Collection
-    {
-        return $this->User_Conge;
-    }
-
-    public function addUserConge(Conge $userConge): static
-    {
-        if (!$this->User_Conge->contains($userConge)) {
-            $this->User_Conge->add($userConge);
-            $userConge->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUserConge(Conge $userConge): static
-    {
-        if ($this->User_Conge->removeElement($userConge)) {
-            // set the owning side to null (unless already changed)
-            if ($userConge->getUser() === $this) {
-                $userConge->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Reclamation>
-     */
-    public function getReclamations(): Collection
-    {
-        return $this->reclamations;
-    }
-
-    public function addReclamation(Reclamation $reclamation): static
-    {
-        if (!$this->reclamations->contains($reclamation)) {
-            $this->reclamations->add($reclamation);
-            $reclamation->setReclamationUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReclamation(Reclamation $reclamation): static
-    {
-        if ($this->reclamations->removeElement($reclamation)) {
-            // set the owning side to null (unless already changed)
-            if ($reclamation->getReclamationUser() === $this) {
-                $reclamation->setReclamationUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Reclamation>
-     */
-    public function getUserReclamation(): Collection
-    {
-        return $this->User_Reclamation;
-    }
-
-    public function addUserReclamation(Reclamation $userReclamation): static
-    {
-        if (!$this->User_Reclamation->contains($userReclamation)) {
-            $this->User_Reclamation->add($userReclamation);
-            $userReclamation->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUserReclamation(Reclamation $userReclamation): static
-    {
-        if ($this->User_Reclamation->removeElement($userReclamation)) {
-            // set the owning side to null (unless already changed)
-            if ($userReclamation->getUser() === $this) {
-                $userReclamation->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Commande>
-     */
-    public function getUserCommande(): Collection
-    {
-        return $this->User_Commande;
-    }
-
-    public function addUserCommande(Commande $userCommande): static
-    {
-        if (!$this->User_Commande->contains($userCommande)) {
-            $this->User_Commande->add($userCommande);
-            $userCommande->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUserCommande(Commande $userCommande): static
-    {
-        if ($this->User_Commande->removeElement($userCommande)) {
-            // set the owning side to null (unless already changed)
-            if ($userCommande->getUser() === $this) {
-                $userCommande->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Commande>
-     */
-    public function getCommandes(): Collection
-    {
-        return $this->commandes;
-    }
-
-    public function addCommande(Commande $commande): static
-    {
-        if (!$this->commandes->contains($commande)) {
-            $this->commandes->add($commande);
-            $commande->setCommandeUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCommande(Commande $commande): static
-    {
-        if ($this->commandes->removeElement($commande)) {
-            // set the owning side to null (unless already changed)
-            if ($commande->getCommandeUser() === $this) {
-                $commande->setCommandeUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Equipement>
-     */
-
     public function getHistoriques(): Collection
     {
         return $this->historiques;
@@ -434,6 +236,97 @@ class User
     public function __toString(): string
     {
         return $this->nom." ".$this->prenom;
+    }
+
+
+    /**
+     * @return Collection<int, Commande>
+     */
+    public function getCommandes(): Collection
+    {
+        return $this->commandes;
+    }
+
+    public function addCommande(Commande $commande): static
+    {
+        if (!$this->commandes->contains($commande)) {
+            $this->commandes->add($commande);
+            $commande->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommande(Commande $commande): static
+    {
+        if ($this->commandes->removeElement($commande)) {
+            // set the owning side to null (unless already changed)
+            if ($commande->getUser() === $this) {
+                $commande->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Conge>
+     */
+    public function getConges(): Collection
+    {
+        return $this->conges;
+    }
+
+    public function addConge(Conge $conge): static
+    {
+        if (!$this->conges->contains($conge)) {
+            $this->conges->add($conge);
+            $conge->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConge(Conge $conge): static
+    {
+        if ($this->conges->removeElement($conge)) {
+            // set the owning side to null (unless already changed)
+            if ($conge->getUser() === $this) {
+                $conge->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reclamation>
+     */
+    public function getReclamations(): Collection
+    {
+        return $this->reclamations;
+    }
+
+    public function addReclamation(Reclamation $reclamation): static
+    {
+        if (!$this->reclamations->contains($reclamation)) {
+            $this->reclamations->add($reclamation);
+            $reclamation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReclamation(Reclamation $reclamation): static
+    {
+        if ($this->reclamations->removeElement($reclamation)) {
+            // set the owning side to null (unless already changed)
+            if ($reclamation->getUser() === $this) {
+                $reclamation->setUser(null);
+            }
+        }
+
+        return $this;
     }
 
 

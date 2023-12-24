@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\LigneCommandeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LigneCommandeRepository::class)]
@@ -16,17 +18,20 @@ class LigneCommande
     #[ORM\Column]
     private ?int $quantite = null;
 
-    #[ORM\ManyToOne(inversedBy: 'Commande_LigneCommande')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Commande $commande = null;
+
+
+
 
     #[ORM\ManyToOne(inversedBy: 'ligneCommandes')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Commande $LigneCommande_Commande = null;
+    private ?Commande $Commande = null;
 
-    #[ORM\ManyToOne(inversedBy: 'ligneCommandes')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Consommable $LigneCommande_Consommable = null;
+    #[ORM\OneToMany(mappedBy: 'LigneCommande', targetEntity: Consommable::class)]
+    private Collection $consommables;
+
+    public function __construct()
+    {
+        $this->consommables = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -45,39 +50,54 @@ class LigneCommande
         return $this;
     }
 
+
+ 
+
     public function getCommande(): ?Commande
     {
-        return $this->commande;
+        return $this->Commande;
     }
 
-    public function setCommande(?Commande $commande): static
+    public function setCommande(?Commande $Commande): static
     {
-        $this->commande = $commande;
+        $this->Commande = $Commande;
 
         return $this;
     }
 
-    public function getLigneCommandeCommande(): ?Commande
+    /**
+     * @return Collection<int, Consommable>
+     */
+    public function getConsommables(): Collection
     {
-        return $this->LigneCommande_Commande;
+        return $this->consommables;
     }
 
-    public function setLigneCommandeCommande(?Commande $LigneCommande_Commande): static
+    public function addConsommable(Consommable $consommable): static
     {
-        $this->LigneCommande_Commande = $LigneCommande_Commande;
+        if (!$this->consommables->contains($consommable)) {
+            $this->consommables->add($consommable);
+            $consommable->setLigneCommande($this);
+        }
 
         return $this;
     }
 
-    public function getLigneCommandeConsommable(): ?Consommable
+    public function removeConsommable(Consommable $consommable): static
     {
-        return $this->LigneCommande_Consommable;
-    }
-
-    public function setLigneCommandeConsommable(?Consommable $LigneCommande_Consommable): static
-    {
-        $this->LigneCommande_Consommable = $LigneCommande_Consommable;
+        if ($this->consommables->removeElement($consommable)) {
+            // set the owning side to null (unless already changed)
+            if ($consommable->getLigneCommande() === $this) {
+                $consommable->setLigneCommande(null);
+            }
+        }
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->id;
+    }
+
 }

@@ -21,11 +21,8 @@ class Reclamation
     private ?\DateTimeInterface $date = null;
 
     #[ORM\ManyToOne(inversedBy: 'reclamations')]
-    private ?User $Reclamation_User = null;
+    private ?User $User = null;
 
-    #[ORM\ManyToOne(inversedBy: 'User_Reclamation')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -56,27 +53,17 @@ class Reclamation
         return $this;
     }
 
-    public function getReclamationUser(): ?User
-    {
-        return $this->Reclamation_User;
-    }
-
-    public function setReclamationUser(?User $Reclamation_User): static
-    {
-        $this->Reclamation_User = $Reclamation_User;
-
-        return $this;
-    }
-
     public function getUser(): ?User
     {
-        return $this->user;
+        return $this->User;
     }
 
-    public function setUser(?User $user): static
+    public function setUser(?User $User): static
     {
-        $this->user = $user;
+        $this->User = $User;
 
         return $this;
     }
+
+
 }

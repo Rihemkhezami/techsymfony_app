@@ -104,7 +104,7 @@ class User
     }
     public function getDateNaisString()
     {
-        return $this->date_nais->format("Y-m-d H:i:s");
+        return $this->date_nais->format("Y-m-d");
     }
     public function setDateNais(\DateTimeInterface $date_nais): static
     {

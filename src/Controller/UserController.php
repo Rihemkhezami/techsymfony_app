@@ -33,6 +33,8 @@ class UserController extends AbstractController
             $data[] = [
                 'id' => $user->getId(),
                 'fullname' => $user->getNom().' '.$user->getPrenom(),
+                'name' => $user->getNom(),
+                'lastname' => $user->getPrenom(),
                 'birthdate' => $user->getDateNaisString(),
                 'address' => $user->getAdresse(),
                 'role'=> $user->getRole(),
@@ -42,24 +44,27 @@ class UserController extends AbstractController
         }
         return $data;
     }
-    #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+
+    /**
+     * @throws \Exception
+     */
+    #[Route('/new', name: 'app_user_new', methods: ['POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
+        $data = json_decode($request->getContent(), true);
+        $user->setNom($data['name']);
+        $user->setPrenom($data['lastname']);
+        $user->setEmail($data['email']);
+        $date = \DateTime::createFromFormat("Y-m-d", $data['birthdate']);
+        $user->setDateNais($date);
+        $user->setRole($data['role']);
+        $user->setAdresse($data['address']);
+        $user->setNombreJrsConge(15);
+        $entityManager->persist($user);
+        $entityManager->flush();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('user/new.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
+        return new JsonResponse(['id'=>$user->getId()]);
     }
 
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
@@ -71,31 +76,31 @@ class UserController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, User $user, EntityManagerInterface $entityManager):JsonResponse
     {
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
+        // Update user data based on the request data
+        $data = json_decode($request->getContent(), true);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+        $user->setNom($data["name"]);
+        $user->setPrenom($data["lastname"]);
+        $user->setEmail($data['email']);
+        $user->setAdresse($data["address"]);
+        $user->setRole($data["role"]);
 
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
-        }
+        $entityManager->flush();
 
-        return $this->render('user/edit.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
+        // Return a JSON response indicating success
+        return new JsonResponse(['message' => 'S']);
     }
 
     #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
-    public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, User $user, EntityManagerInterface $entityManager): JsonResponse
     {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+
             $entityManager->remove($user);
             $entityManager->flush();
-        }
 
-        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+
+        return new JsonResponse(['info'=>'D']);
     }
 }

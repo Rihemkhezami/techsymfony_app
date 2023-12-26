@@ -105,32 +105,156 @@
             </v-card>
           </v-col>
 
-          <v-col cols="12" sm="4" class="mt-n4">
-            <v-card class="mx-auto" height="350px">
-              <v-card-item title="Doughnut">
-                <Doughnut />
+          
+          <v-col cols="12" sm="8" class="mt-2">
+            <v-card class="mx-auto" height="400px">
+              <v-card-item >
+                <BarChart />
               </v-card-item>
+            </v-card>
+          </v-col>
+
+          <v-col cols="12" sm="4" class="mt-1">
+            <v-card class="mx-auto" height="350px">
+              <v-card-item>
+        
+                <v-col cols="12" sm="3">
+            <v-card
+            class="rounded-xs"
+              height="90"
+              width="290"
+            >
+              <div class="d-flex flex-no-wrap">
+                <v-avatar class="ml-5 mt-2" size="65px" color="#FFF799">
+                    <v-icon icon="mdi mdi-pause-circle-outline" size="x-large" color="#FFD940"></v-icon>
+                </v-avatar>
+                <div >
+                  <v-card-text class="text-h6 mt-0">
+                    orders in process
+                  </v-card-text>
+
+                  <v-card-subtitle class="ml-5 ">20</v-card-subtitle>
+                </div>
+               <!-- <v-img src="map.png" class="mr-4 mt-5" absolute></v-img>-->
+              </div>
+            </v-card>
+          </v-col>
+
+          <v-col cols="12" sm="3">
+            <v-card
+            class="rounded-xs"
+              height="90"
+              width="290"
+            >
+              <div class="d-flex flex-no-wrap">
+                <v-avatar class="ml-5 mt-2" size="65px" color="#aff4c6">
+                    <v-icon icon="mdi mdi-check-circle-outline" size="x-large" color="#009951"></v-icon>
+                </v-avatar>
+                <div>
+                  <v-card-text class="text-h6 mt-0">
+                    completed orders
+                  </v-card-text>
+
+                  <v-card-subtitle class="ml-5">25</v-card-subtitle>
+                </div>
+               <!-- <v-img src="map.png" class="mr-4 mt-5" absolute></v-img>-->
+              </div>
+            </v-card>
+          </v-col>
+
+          <v-col cols="12" sm="3">
+            <v-card
+            class="rounded-xs"
+              height="90"
+              width="290"
+            >
+              <div class="d-flex flex-no-wrap">
+                <v-avatar class="ml-5 mt-2" size="65px" color="#FFB6B8">
+                    <v-icon icon="mdi mdi-close-circle-outline" size="x-large" color="#C60030"></v-icon>
+                </v-avatar>
+                <div>
+                  <v-card-text class="text-h6 mt-0">
+                    cancelled orders
+                  </v-card-text>
+
+                  <v-card-subtitle class="ml-5">4</v-card-subtitle>
+                </div>
+               <!-- <v-img src="map.png" class="mr-4 mt-5" absolute></v-img>-->
+              </div>
+            </v-card>
+          </v-col>
+
+
+             </v-card-item>
+             
 
               <v-card-text class="py-0"> </v-card-text>
             </v-card>
           </v-col>
-          <v-col cols="12" sm="8" class="mt-n4">
-            <v-card class="mx-auto" height="350px">
-              <v-card-item title="Bubble">
-                <Bubble />
-              </v-card-item>
+
+
+
+          <v-col cols="12" sm="8" class="mt-2">
+            <v-card class="mx-auto" height="130">
+              
+
+              
+                <v-row class="ml-6 mt-3 ">
+          <v-col cols="12" sm="4" class="ml-4">
+            <v-card
+              class="rounded-xs"
+              height="90"
+              width="300"
+            >
+              <div class="d-flex flex-no-wrap ">
+                <v-avatar class="ml-5 mt-2" size="70px" color="#B0CC99">
+                    <v-icon icon="mdi mdi-form-select" size="x-large" color="#677E52" ></v-icon>
+                </v-avatar>
+                <div>
+                  <v-card-text class="text-h5 mt-0">
+                    pending request
+                  </v-card-text>
+
+                  <v-card-subtitle>20</v-card-subtitle>
+                </div>
+               <!--<v-img src="av.png" class="mr-4 mt-5" absolute></v-img>--> 
+              </div>
             </v-card>
           </v-col>
-          <v-col cols="12" sm="8" class="mt-n4">
-            <v-card class="mx-auto">
-              <v-card-item title="Last Trips">
-                <template v-slot:subtitle> Overview of latest month </template>
-              </v-card-item>
 
-              <v-card-text class="py-0 mt-n4">
-                <v-row align="center" no-gutters>
-                  <v-col class="" cols="12">
-                    <v-list lines="two">
+          <v-col cols="12" sm="3" class="ml-16">
+            <v-card
+              class="rounded-xs"
+              height="90"
+              width="320"
+            >
+              <div class="d-flex flex-no-wrap ">
+                <v-avatar class="ml-5 mt-2" size="70px" color="#F6E497">
+                    <v-icon icon="mdi mdi mdi-briefcase" size="x-large" color="#BD8D46" ></v-icon>
+                </v-avatar>
+                <div>
+                  <v-card-text class="text-h5 mt-0">
+                    pending demand
+                  </v-card-text>
+
+                  <v-card-subtitle>48</v-card-subtitle>
+                </div>
+               <!--<v-img src="av.png" class="mr-4 mt-5" absolute></v-img>--> 
+              </div>
+            </v-card>
+          </v-col>
+          
+          </v-row>
+             
+            </v-card>
+            
+          </v-col>
+
+
+          <v-col cols="12" sm="4" class="mt-n12">
+            <v-card height="180px" class="">
+              <v-card-item title="Top users">
+                <v-list lines="two">
                       <v-list-item
                         v-for="folder in folders"
                         :key="folder.title"
@@ -142,30 +266,14 @@
                             <v-img :src="folder.img" alt="John"></v-img>
                           </v-avatar>
                         </template>
-
-                        <template v-slot:append>
-                          <v-btn
-                            size="large"
-                            color="#B49239"
-                            icon="mdi mdi-airplane-off"
-                          ></v-btn>
-                        </template>
-                      </v-list-item>
-                    </v-list>
-                  </v-col>
-                </v-row>
-              </v-card-text>
-            </v-card>
-          </v-col>
-          <v-col cols="12" sm="4" class="mt-n4">
-            <v-card height="155px" class="">
-              <v-card-item title="Bar Chart">
-                <Bar class="mt-n4" />
+                        </v-list-item>
+                        </v-list>
+                        
               </v-card-item>
 
-              <v-card-text class="py-0"> </v-card-text>
             </v-card>
           </v-col>
+          
         </v-row>
       </v-container>
    
@@ -181,7 +289,9 @@
   <script setup>
   import NavBar from "@/components/employe/NavBar.vue";
   import SideBar from "@/components/admin/SideBar.vue";
-  
+import BarChart from "@/components/admin/BarChart.vue";
+import LineChart from "@/components/admin/LineChart.vue";
+
   </script>
   <script>
   
@@ -189,26 +299,27 @@
   
   export default {
 
-    data() {
-      return {
-        quantity: 1 // Quantité initiale
-      };
-    },
-    methods: {
-      increaseQuantity() {
-        this.quantity++;
+    data: () => ({
+    folders: [
+      {
+        subtitle: "John Doe",
+        title: "john@gmail.com",
+        img: "1.jpg",
       },
-      decreaseQuantity() {
-        if (this.quantity > 1) {
-          this.quantity--;
-        }
-      }
-    },
+      {
+        subtitle: "Wilian Ava ",
+        title: "wiliam@gmail.com",
+        img: "2.jpg",
+      },
+    ],
+  }),
    
    
     components: {
       SideBar,
       NavBar,
+      BarChart,
+      LineChart,
   
     },
   };

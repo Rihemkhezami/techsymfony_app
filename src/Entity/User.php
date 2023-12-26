@@ -102,13 +102,17 @@ class User
     {
         return $this->date_nais;
     }
-
+    public function getDateNaisString()
+    {
+        return $this->date_nais->format("Y-m-d H:i:s");
+    }
     public function setDateNais(\DateTimeInterface $date_nais): static
     {
         $this->date_nais = $date_nais;
 
         return $this;
     }
+
 
     public function getAdresse(): ?string
     {

@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Controller;
-
+use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
@@ -14,14 +15,33 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/user')]
 class UserController extends AbstractController
 {
-    #[Route('/', name: 'app_user_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
-    {
-        return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
-        ]);
-    }
 
+    #[Route('/', name: 'app_user_index', methods: ['GET'])]
+    public function index(UserRepository $userRepository)
+    {
+        $data = $userRepository->findAll();
+        $serializedUsers = $this->serializeUsers($data);
+        return new JsonResponse($serializedUsers) ;
+
+    }
+    private function serializeUsers($users): array
+    {
+        // Serialize users to an array or customize the serialization as needed
+        $data = [];
+
+        foreach ($users as $user) {
+            $data[] = [
+                'id' => $user->getId(),
+                'fullname' => $user->getNom().' '.$user->getPrenom(),
+                'birthdate' => $user->getDateNaisString(),
+                'address' => $user->getAdresse(),
+                'role'=> $user->getRole(),
+                'nbrConj' => $user->getNombreJrsConge(),
+                'email' => $user->getEmail(),
+            ];
+        }
+        return $data;
+    }
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {

@@ -1,6 +1,6 @@
 <script setup>
-  import RightSide from '../components/login/RightSide.vue';
-  import LeftSide from '../components/login/LeftSide.vue'
+  import RightSide from '../components/register/RightSide.vue';
+  import LeftSide from '../components/register/LeftSide.vue';
 </script>
 
 <template>

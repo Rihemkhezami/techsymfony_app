@@ -12,6 +12,11 @@ const routes = [
         component: () => import(/* webpackChunkName: "home" */ '@/views/Login.vue'),
       },
       {
+        path: '/register',
+        name: 'Register',
+        component: () => import(/* webpackChunkName: "home" */ '@/views/Register.vue'),
+      },
+      {
         path: 'dashboard',
         name: 'Dashboard',
         component: () => import(/* webpackChunkName: "home" */ '@/views/admin/Dashboard.vue'),
@@ -55,6 +60,21 @@ const routes = [
         path: 'demand',
         name: 'Demand',
         component: () => import(/* webpackChunkName: "home" */ '@/views/employe/Demand.vue'),
+      },
+      {
+        path: 'dashboard/equipments',
+        name: 'admin_equipments',
+        component: () => import(/* webpackChunkName: "home" */ '@/views/admin/Equipments.vue'),
+      },
+      {
+        path: 'dashboard/users',
+        name: 'admin_users',
+        component: () => import(/* webpackChunkName: "home" */ '@/views/admin/Users.vue'),
+      },
+      {
+        path: 'dashboard/requests',
+        name: 'admin_requests',
+        component: () => import(/* webpackChunkName: "home" */ '@/views/admin/Requests.vue'),
       },
     ],
   },

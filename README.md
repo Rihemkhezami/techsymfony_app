@@ -5,3 +5,8 @@ symfony doctrine:migrations:create
 symfony make:auth
 symfony make:registration-form
 c require Symfonycasts/verify-email-bundle
+####################################
+c require "lexik/jwt-authentication-bundle"
+
+
+

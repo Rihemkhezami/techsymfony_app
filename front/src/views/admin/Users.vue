@@ -267,6 +267,7 @@
         this.loading=true
     axios.get('http://localhost:8000/user',)
       .then(response => {
+      console.log(response.data)
         this.users = response.data;
       })
       .catch(error => {

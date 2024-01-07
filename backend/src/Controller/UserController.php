@@ -1,6 +1,11 @@
 <?php
 
 namespace App\Controller;
+use App\Entity\Conge;
+use App\Entity\Equipement;
+use App\Entity\Reclamation;
+use App\Repository\EquipementRepository;
+use PHPUnit\Util\Json;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\User;
@@ -17,6 +22,34 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
 
+
+
+
+    #[Route('/dash', name: 'app_user_dash', methods: ['GET'])]
+    public function dashBoard(EntityManagerInterface $entityManager):JsonResponse
+    {
+        $equip = $entityManager->createQuery(
+            'SELECT COUNT(e.id) FROM ' . Equipement::class . ' e'
+        );
+        $equipCount = $equip->getSingleScalarResult();
+
+        $conge = $entityManager->createQuery(
+            "SELECT COUNT(e.id) FROM ". Conge::class ." e WHERE UPPER(e.progress)='Y' "
+        );
+        $congeCount = $conge->getSingleScalarResult();
+
+        $rec = $entityManager->createQuery(
+            "SELECT COUNT(e.id) FROM ". Reclamation::class ." e WHERE UPPER(e.progress)='Y' "
+        );
+        $recCount = $rec->getSingleScalarResult();
+        $user = $entityManager->createQuery(
+            'SELECT COUNT(e.id) FROM ' . User::class . ' e'
+        );
+        $userCount = $user->getSingleScalarResult();
+
+        return new JsonResponse(["equip"=>$equipCount,"conge"=>$congeCount,"rec"=>$recCount,"user"=>$userCount]) ;
+
+    }
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository)
     {
